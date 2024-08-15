@@ -82,14 +82,14 @@
       lineinfile:
         dest: "./test.csv"
         line:
-          hostname,image,iostype,model,serialnum,system,version,spacefree_kb,spacetotal_kb
+          address,hostname
         create: yes
         state: present
 
     - name: CSV - Get IOS devices facts
       set_fact:
         csv_tmp: >
-          {{ status }},{{ central_manager.name }}
+          {{ central_manager.address }},{{ central_manager.name }}
 
     - name: CSV - Write information into .csv file
       lineinfile:
