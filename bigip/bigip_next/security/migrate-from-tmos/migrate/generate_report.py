@@ -26,5 +26,6 @@ if __name__ == "__main__":
 
     with open(json_file, 'r') as file:
         migrate_apps = json.load(file)
+    migrate_apps = migrate_apps[17:1]
 
     generate_csv_report(output_file, migrate_apps, migrate_app_prefix)
