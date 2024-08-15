@@ -8,7 +8,7 @@ def generate_csv_report(output_file, migrate_apps, migrate_app_prefix):
         writer = csv.DictWriter(file, fieldnames=headers)
         writer.writeheader()
 
-        for app in migrate_apps:
+        for app in migrate_apps['applications']:
             for vs in app['virtual_servers']:
                 app_name = vs['name']
                 row = {
@@ -26,6 +26,5 @@ if __name__ == "__main__":
 
     with open(json_file, 'r') as file:
         migrate_apps = json.load(file)
-    migrate_apps = migrate_apps[17:1]
 
     generate_csv_report(output_file, migrate_apps, migrate_app_prefix)
