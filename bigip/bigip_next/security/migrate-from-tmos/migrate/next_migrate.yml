@@ -74,11 +74,11 @@
       vars:
         query: "_embedded.applications[?virtual_servers[?(status=='green' || status=='yellow') && length(irules) == `0`]]"
 
-
     - name: Write cm_apps JSON data to a temporary file
-      copy:
-        content: "{{ cm_apps.json }}"
-        dest: cm_apps_input.json
+      command: >
+        python3 write_variable.py
+        "{{ cm_apps.json }}"
+        "{{ output_file }}"
 
     - name: Save host data to CSV using Python script
       delegate_to: localhost
