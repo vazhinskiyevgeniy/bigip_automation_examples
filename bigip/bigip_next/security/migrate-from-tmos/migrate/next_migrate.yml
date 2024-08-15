@@ -80,17 +80,12 @@
         module: command
         args:
           cmd: >
-            python3 generate_report.py
+            python3 /path/to/generate_report.py
             '{{ host_data | to_json }}'
             '{{ output_file }}'
-
-    - name: Display the CSV file content
-      delegate_to: localhost
-      local_action:
-        module: command
-        args:
-          cmd: cat {{ output_file }}
-
+            '{{ deploy_tree | to_json }}'
+            '{{ ip_map | to_json }}'
+            
     - name: Extract not installed Shared Objects
       set_fact:
         app_shared_objects_names: "{{ migrate_apps | shared_object_names(migrate_shared_object_prefix) }}"
