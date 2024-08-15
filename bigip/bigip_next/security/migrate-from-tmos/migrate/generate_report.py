@@ -12,10 +12,10 @@ def generate_csv_report(output_file, migrate_apps, migrate_app_prefix):
             for vs in app['virtual_servers']:
                 app_name = vs['name']
                 row = {
-                    'App_Name_Cut': app_name.replace(migrate_app_prefix, '', 1),
-                    'App_Name': app_name,
+                    'Old_App_Name': app_name.replace(migrate_app_prefix, '', 1),
+                    'New_App_Name': app_name,
                     'Status': vs['status'],
-                    'IP_Address': vs['ip_addresses'][0] if vs['ip_addresses'] else ''
+                    'Old_IP_Address': vs['ip_addresses'][0] if vs['ip_addresses'] else ''
                 }
                 writer.writerow(row)
 
