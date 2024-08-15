@@ -82,7 +82,7 @@
           cmd: >
             python3 generate_report.py
             '{{ report_file }}'
-            '{{ cm_apps._embedded }}'
+            '{{ migrate_apps | to_json }}'
             '{{ migrate_app_prefix }}'
             
     - name: Extract not installed Shared Objects
