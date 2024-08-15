@@ -21,7 +21,10 @@ def generate_csv_report(output_file, migrate_apps, migrate_app_prefix):
 
 if __name__ == "__main__":
     output_file = sys.argv[1]
-    migrate_apps = json.loads(sys.argv[2])
+    json_file = sys.argv[2]
     migrate_app_prefix = sys.argv[3]
+
+    with open(json_file, 'r') as file:
+        migrate_apps = json.load(file)
 
     generate_csv_report(output_file, migrate_apps, migrate_app_prefix)
