@@ -94,12 +94,12 @@
     - name: CSV - Write information into .csv file
       lineinfile:
         insertafter: EOF
-        dest: "{{ output_path }}/{{ filename }}"
+        dest: "./test.csv"
         line: "{{ csv_tmp }}"
 
     - name: CSV - Blank lines removal
       lineinfile:
-        path: "./{{ output_path }}/{{ filename }}"
+        path: "./test.csv"
         state: absent
         regex: '^\s*$'
 
