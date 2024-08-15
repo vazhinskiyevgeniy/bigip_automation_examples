@@ -74,34 +74,35 @@
       vars:
         query: "_embedded.applications[?virtual_servers[?(status=='green' || status=='yellow') && length(irules) == `0`]]"
 
-    - name: CSV - Generate output filename
-      set_fact: date="{{lookup('pipe','date +%Y%m%d')}}"
-      run_once: true
+    - name: Generate a CSV report
+      hosts: localhost
+      gather_facts: no
 
-    - name: CSV - Create file and set the header
-      lineinfile:
-        dest: "~/bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/migrate/test.csv"
-        line:
-          address,user
-        create: yes
-        state: present
+      vars:
+        output_file: ansible_report.csv
+        host_data:
+          - hostname: server1
+            ip_address: 192.168.1.10
+          - hostname: server2
+            ip_address: 192.168.1.11
 
-    - name: CSV - Get IOS devices facts
-      set_fact:
-        csv_tmp: >
-          {{ central_manager.address }},{{ central_manager.user }}
+      tasks:
+        - name: Save host data to CSV using Python script
+          delegate_to: localhost
+          local_action:
+            module: command
+            args:
+              cmd: >
+                python3 generate_report.py
+                '{{ host_data | to_json }}'
+                '{{ output_file }}'
 
-    - name: CSV - Write information into .csv file
-      lineinfile:
-        insertafter: EOF
-        dest: "~/bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/migrate/test.csv"
-        line: "{{ csv_tmp }}"
-
-    - name: CSV - Blank lines removal
-      lineinfile:
-        path: "~/bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/migrate/test.csv"
-        state: absent
-        regex: '^\s*$'
+        - name: Display the CSV file content
+          delegate_to: localhost
+          local_action:
+            module: command
+            args:
+              cmd: cat ansible_report.csv
 
     - name: Extract not installed Shared Objects
       set_fact:
