@@ -80,7 +80,7 @@
         module: command
         args:
           cmd: >
-            python3 /path/to/generate_report.py
+            python3 generate_report.py
             '{{ report_file }}'
             '{{ deploy_tree | to_json }}'
             '{{ ip_map | to_json }}'
