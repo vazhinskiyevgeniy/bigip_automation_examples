@@ -81,8 +81,8 @@
         args:
           cmd: >
             python3 generate_report.py
-            '{{ host_data | to_json }}'
             '{{ output_file }}'
+            '{{ host_data | to_json }}'
             '{{ deploy_tree | to_json }}'
             '{{ ip_map | to_json }}'
             
