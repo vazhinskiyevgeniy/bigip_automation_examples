@@ -3,7 +3,7 @@ import sys
 
 # Function to generate a CSV report
 def generate_csv_report(output_file, data):
-    headers = ['Hostname', 'IP Address']
+    headers = ['hostname', 'ip_address']  # Update headers to match the keys in the data
     with open(output_file, 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=headers)
         writer.writeheader()
