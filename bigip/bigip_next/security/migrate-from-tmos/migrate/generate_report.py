@@ -12,8 +12,8 @@ def generate_csv_report(output_file, migrate_apps, migrate_app_prefix, ip_map):
             for vs in app.get('virtual_servers', []):
                 app_name = vs['name']
                 old_ip = vs['ip_addresses'][0] if vs.get('ip_addresses') else '-'
-                ip_without_port = old_ip.split('/')[0] if old_ip else '-'
-                new_ip = ip_map.get(ip_without_port, '-')
+                old_ip_without_port = old_ip.split('/')[0] if old_ip else '-'
+                new_ip = ip_map.get(old_ip_without_port, '-')
                 as3_unsupported = '-'
                 if vs.get('status', 'unknown') == 'yellow':
                     as3_unsupported_list = vs.get('as3_unsupported', [])
@@ -23,7 +23,7 @@ def generate_csv_report(output_file, migrate_apps, migrate_app_prefix, ip_map):
                     'Old_App_Name': app_name.replace(migrate_app_prefix, '', 1),
                     'New_App_Name': app_name,
                     'Status': vs.get('status', 'unknown'),
-                    'Old_IP_Address': old_ip,
+                    'Old_IP_Address': old_ip_without_port,
                     'New_IP_Address': new_ip,
                     'as3_unsupported': as3_unsupported
                 }
@@ -33,12 +33,9 @@ if __name__ == "__main__":
     output_file = sys.argv[1]
     json_file = sys.argv[2]
     migrate_app_prefix = sys.argv[3]
-    ip_map_json = sys.argv[4]
+    ip_map = json.loads(sys.argv[4])
 
     with open(json_file, 'r') as file:
         migrate_apps = json.load(file)
-
-    with open(ip_map_json, 'r') as file:
-        ip_map = json.load(file)
 
     generate_csv_report(output_file, migrate_apps, migrate_app_prefix, ip_map)
