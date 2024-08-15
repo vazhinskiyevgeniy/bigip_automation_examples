@@ -74,12 +74,6 @@
       vars:
         query: "_embedded.applications[?virtual_servers[?(status=='green' || status=='yellow') && length(irules) == `0`]]"
 
-    - name: Write cm_apps JSON data to a temporary file
-      command: >
-        python3 write_variable.py
-        "{{ cm_apps.json }}"
-        "{{ output_file }}"
-
     - name: Save host data to CSV using Python script
       delegate_to: localhost
       local_action:
@@ -88,8 +82,8 @@
           cmd: >
             python3 generate_report.py
             '{{ report_file }}'
-            '{{ deploy_tree | to_json }}'
-            '{{ ip_map | to_json }}'
+            '{{ cm_apps.json._embedded | to_json }}'
+            '{{ migrate_app_prefix }}'
             
     - name: Extract not installed Shared Objects
       set_fact:
