@@ -80,10 +80,12 @@
         module: command
         args:
           cmd: >
-            python3 generate_report.py
+            python3 /path/to/generate_report.py
             '{{ report_file }}'
             '{{ deploy_tree | to_json }}'
             '{{ ip_map | to_json }}'
+            '{{ cm_apps | to_json }}'
+            'cm_apps.json'
             
     - name: Extract not installed Shared Objects
       set_fact:

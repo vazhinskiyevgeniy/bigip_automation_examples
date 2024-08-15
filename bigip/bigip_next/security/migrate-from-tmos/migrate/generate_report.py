@@ -1,4 +1,5 @@
 import csv
+import json
 import sys
 
 def generate_csv_report(output_file, deploy_tree, ip_map):
@@ -18,11 +19,16 @@ def generate_csv_report(output_file, deploy_tree, ip_map):
                     }
                     writer.writerow(row)
 
-if __name__ == "__main__":
-    import json
+def save_cm_apps_json(cm_apps, output_json_file):
+    with open(output_json_file, 'w') as json_file:
+        json.dump(cm_apps, json_file, indent=4)
 
+if __name__ == "__main__":
     output_file = sys.argv[1]
     deploy_tree = json.loads(sys.argv[2])
     ip_map = json.loads(sys.argv[3])
+    cm_apps = json.loads(sys.argv[4]) 
+    output_json_file = sys.argv[5]
 
     generate_csv_report(output_file, deploy_tree, ip_map)
+    save_cm_apps_json(cm_apps, output_json_file)
