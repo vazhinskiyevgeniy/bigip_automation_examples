@@ -17,9 +17,4 @@ ip_map:
   10.1.10.90: 10.1.10.190
   10.1.10.91: 10.1.10.191
 
-output_file: report.csv
-host_data:
-  - hostname: server1
-    ip_address: 192.168.1.10
-  - hostname: server2
-    ip_address: 192.168.1.11
+report_file: report.csv
