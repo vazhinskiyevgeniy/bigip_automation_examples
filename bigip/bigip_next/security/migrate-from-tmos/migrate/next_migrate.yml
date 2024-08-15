@@ -82,7 +82,7 @@
       lineinfile:
         dest: "./test.csv"
         line:
-          address,hostname
+          address,name
         create: yes
         state: present
 
