@@ -2,20 +2,25 @@ import csv
 import sys
 import json
 
-def generate_csv_report(output_file, migrate_apps, migrate_app_prefix):
-    headers = ['Old_App_Name', 'New_App_Name', 'Status', 'Old_IP_Address']
+def generate_csv_report(output_file, migrate_apps, migrate_app_prefix, ip_map):
+    headers = ['Old_App_Name', 'New_App_Name', 'Status', 'Old_IP_Address', 'New_IP_Address']
     with open(output_file, 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=headers)
         writer.writeheader()
 
         for app in migrate_apps['applications']:
-            for vs in app['virtual_servers']:
+            for vs in app.get('virtual_servers', []):
                 app_name = vs['name']
+                old_ip = vs['ip_addresses'][0] if vs.get('ip_addresses') else ''
+                ip_without_port = old_ip.split('/')[0] if old_ip else ''
+                new_ip = ip_map.get(ip_without_port, '')
+                
                 row = {
                     'Old_App_Name': app_name.replace(migrate_app_prefix, '', 1),
                     'New_App_Name': app_name,
-                    'Status': vs['status'],
-                    'Old_IP_Address': vs['ip_addresses'][0] if vs['ip_addresses'] else ''
+                    'Status': vs.get('status', 'unknown'),
+                    'Old_IP_Address': old_ip,
+                    'New_IP_Address': new_ip
                 }
                 writer.writerow(row)
 
@@ -23,8 +28,12 @@ if __name__ == "__main__":
     output_file = sys.argv[1]
     json_file = sys.argv[2]
     migrate_app_prefix = sys.argv[3]
+    ip_map_json = sys.argv[4]
 
     with open(json_file, 'r') as file:
         migrate_apps = json.load(file)
 
-    generate_csv_report(output_file, migrate_apps, migrate_app_prefix)
+    with open(ip_map_json, 'r') as file:
+        ip_map = json.load(file)
+
+    generate_csv_report(output_file, migrate_apps, migrate_app_prefix, ip_map)
