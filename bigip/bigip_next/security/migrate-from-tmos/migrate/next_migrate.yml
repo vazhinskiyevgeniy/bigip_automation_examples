@@ -80,7 +80,7 @@
 
     - name: CSV - Create file and set the header
       lineinfile:
-        dest: "./test.csv"
+        dest: "~/bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/migrate/test.csv"
         line:
           address,user
         create: yes
@@ -94,12 +94,12 @@
     - name: CSV - Write information into .csv file
       lineinfile:
         insertafter: EOF
-        dest: "./test.csv"
+        dest: "~/bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/migrate/test.csv"
         line: "{{ csv_tmp }}"
 
     - name: CSV - Blank lines removal
       lineinfile:
-        path: "./test.csv"
+        path: "~/bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/migrate/test.csv"
         state: absent
         regex: '^\s*$'
 
