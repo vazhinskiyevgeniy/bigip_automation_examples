@@ -18,3 +18,4 @@ ip_map:
   10.1.10.91: 10.1.10.191
 
 report_file: report.csv
+output_json_file: cm_apps.json

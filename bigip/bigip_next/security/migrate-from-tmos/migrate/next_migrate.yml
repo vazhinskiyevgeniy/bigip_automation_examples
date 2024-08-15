@@ -85,7 +85,7 @@
             '{{ deploy_tree | to_json }}'
             '{{ ip_map | to_json }}'
             '{{ cm_apps | to_json }}'
-            'cm_apps.json'
+            '{{ output_json_file }}'
             
     - name: Extract not installed Shared Objects
       set_fact:
