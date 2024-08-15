@@ -89,7 +89,7 @@
       local_action:
         module: command
         args:
-          cmd: cat ansible_report.csv
+          cmd: cat {{ output_file }}
 
     - name: Extract not installed Shared Objects
       set_fact:
